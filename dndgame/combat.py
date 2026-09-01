@@ -1,14 +1,14 @@
 from dndgame.dice import roll
-
+from dndgame.character import Character
 
 class Combat:
-    def __init__(self, player, enemy):
+    def __init__(self, player: Character, enemy: Character) -> None:
         self.player = player
         self.enemy = enemy
         self.round = 0
-        self.initiative_order = []
+        self.initiative_order: list[Character] = []
 
-    def roll_initiative(self):
+    def roll_initiative(self) -> list[Character]:
         """Roll initiative for combat order."""
         player_init = roll(20, 1) + self.player.get_modifier("DEX")
         enemy_init = roll(20, 1) + self.enemy.get_modifier("DEX")
@@ -20,7 +20,7 @@ class Combat:
 
         return self.initiative_order
 
-    def attack(self, attacker, defender):
+    def attack(self, attacker: Character, defender: Character) -> int:
         attack_roll = roll(20, 1) + attacker.get_modifier("STR")
         weapon_max_damage = 6
         if attack_roll >= defender.armor_class:
