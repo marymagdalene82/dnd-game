@@ -1,6 +1,24 @@
 from dndgame.dice import roll
 
-
+RACIAL_BONUSES: dict[str, dict[str, int]] = {
+    "Human": {
+        "STR": 1,
+        "DEX": 1,
+        "CON": 1,
+        "INT": 1,
+        "WIS": 1,
+        "CHA": 1,
+    },
+    "Elf": {
+        "DEX": 2,
+    },
+    "Dwarf": {
+        "CON": 2,
+    },
+    "Halfling": {
+        "DEX": 2,
+    },
+}
 class Character:
     """Represent a playable D&D character.
 
@@ -58,15 +76,8 @@ class Character:
         self.hp = self.max_hp
 
     def apply_racial_bonuses(self) -> None:
-        """Apply the ability score bonus associated with the character's race.
+        """Apply the ability score bonuses associated with the character's race."""
+        bonuses = RACIAL_BONUSES.get(self.race, {})
 
-        Humans receive +1 to every ability score, elves receive +2 DEX,
-        and dwarves receive +2 CON.
-        """
-        if self.race == "Dwarf":
-            self.stats["CON"] += 2
-        elif self.race == "Elf":
-            self.stats["DEX"] += 2
-        elif self.race == "Human":
-            for stat in self.stats:
-                self.stats[stat] += 1
+        for stat, bonus in bonuses.items():
+            self.stats[stat] += bonus
