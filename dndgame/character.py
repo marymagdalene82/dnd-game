@@ -1,4 +1,5 @@
 from dndgame.dice import roll
+from dndgame.entity import Entity
 
 RACIAL_BONUSES: dict[str, dict[str, int]] = {
     "Human": {
@@ -19,7 +20,7 @@ RACIAL_BONUSES: dict[str, dict[str, int]] = {
         "DEX": 2,
     },
 }
-class Character:
+class Character(Entity):
     """Represent a playable D&D character.
 
     Attributes:
@@ -40,14 +41,9 @@ class Character:
                 race: The character's race.
                 base_hp: The character's base hit points before modifiers.
         """
-        self.name: str = name
+        super().__init__(name, base_hp)
         self.race: str = race
-        self.stats: dict[str, int] = {}
-        self.base_hp: int = base_hp
-        self.hp: int = 0
-        self.max_hp: int = 0
         self.level: int = 1
-        self.armor_class: int = 10
 
     def get_modifier(self, stat: str) -> int:
         """Calculate the ability modifier for a given stat.
