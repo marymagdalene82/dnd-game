@@ -3,6 +3,7 @@ from dndgame.dice import roll
 
 
 def create_character():
+    """Create a character from user input."""
     print("Welcome to D&D Adventure!")
     name = input("Enter your character's name: ")
 
@@ -10,9 +11,20 @@ def create_character():
     print("1. Human (+1 to all stats)")
     print("2. Elf (+2 DEX)")
     print("3. Dwarf (+2 CON)")
-    race_choice = input("Enter choice (1-3): ")
-    print("\n")
-    race = ["Human", "Elf", "Dwarf"][int(race_choice) - 1]
+    race_choices: dict[str, str] = {
+        "1": "Human",
+        "2": "Elf",
+        "3": "Dwarf",
+        "4": "Halfling",
+    }
+    while True:
+        race_choice = input("Enter choice (1-4): ")
+
+        if race_choice in race_choices:
+            race = race_choices[race_choice]
+            break
+
+        print("Invalid choice. Please enter a number from 1 to 4.")
 
     character = Character(name, race, 10)
     character.roll_stats()
