@@ -17,3 +17,20 @@ def test_halfling_racial_bonus() -> None:
     character.apply_racial_bonuses()
 
     assert character.stats["DEX"] == 12
+
+def test_entity_is_alive() -> None:
+    """Test that an entity is alive when it has HP above zero."""
+    character = Character("Hero", "Human", 10)
+
+    character.hp = 5
+
+    assert character.is_alive() is True
+
+
+def test_entity_is_not_alive() -> None:
+    """Test that an entity is not alive at zero HP."""
+    character = Character("Hero", "Human", 10)
+
+    character.hp = 0
+
+    assert character.is_alive() is False

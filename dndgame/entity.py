@@ -25,3 +25,11 @@ class Entity:
             The ability modifier calculated from the stat score.
         """
         return (self.stats[stat] - 10) // 2
+
+    def is_alive(self) -> bool:
+        """Return whether the entity still has hit points.
+
+        Returns:
+            True if the entity has more than zero hit points.
+        """
+        return self.hp > 0

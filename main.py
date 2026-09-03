@@ -1,6 +1,7 @@
 from dndgame.character import Character
 from dndgame.dice import roll
-
+from dndgame.combat import Combat
+from dndgame.enemy import Enemy
 
 def create_character():
     """Create a character from user input."""
@@ -41,30 +42,67 @@ def display_character(character):
     print(f"\nHP: {character.hp}")
 
 
-def simple_combat(player):
-    print("\nA goblin appears!")
-    goblin_hp = 5
+def combat_with_goblin(player: Character) -> bool:
+    """Run a combat encounter between the player and a goblin.
 
-    while goblin_hp > 0:
-        print(f"\nGoblin HP: {goblin_hp}")
+    Args:
+        player: The character controlled by the player.
+
+    Returns:
+        True if the player defeats the goblin, otherwise False.
+    """
+    print("\nA goblin appears!")
+
+    goblin = Enemy("Goblin", 5, 10)
+    goblin.stats = {
+        "STR": 10,
+        "DEX": 10,
+        "CON": 10,
+    }
+    goblin.hp = goblin.base_hp
+    goblin.max_hp = goblin.base_hp
+
+    combat = Combat(player, goblin)
+    combat.roll_initiative()
+
+    while player.is_alive() and goblin.is_alive():
+        print(f"\n{goblin.name} HP: {goblin.hp}")
+        print(f"{player.name} HP: {player.hp}")
+
         print("\nYour turn!")
         print("1. Attack")
         print("2. Run away")
         print()
 
         choice = input("What do you do? ")
+
         if choice == "1":
-            attack = roll(20, 1)
-            if attack >= 10:
-                damage = roll(4, 1)
-                goblin_hp -= damage
+            damage = combat.attack(player, goblin)
+
+            if damage > 0:
                 print(f"You hit for {damage} damage!")
             else:
                 print("You missed!")
+
+            if not goblin.is_alive():
+                break
+
+            print("\nThe goblin attacks!")
+
+            damage = combat.attack(goblin, player)
+
+            if damage > 0:
+                print(f"The goblin hits you for {damage} damage!")
+            else:
+                print("The goblin missed!")
+
         elif choice == "2":
             return False
 
-    return True
+        else:
+            print("Invalid choice.")
+
+    return player.is_alive()
 
 
 def main():
@@ -79,7 +117,7 @@ def main():
         choice = input("Enter choice (1-3): ")
 
         if choice == "1":
-            victory = simple_combat(player)
+            victory = combat_with_goblin(player)
             if victory:
                 print("You defeated the goblin!")
             else:
