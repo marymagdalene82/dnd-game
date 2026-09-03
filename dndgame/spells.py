@@ -54,8 +54,4 @@ class SpellBook:
             A list of spells whose level is less than or equal to
             the supplied spell level.
         """
-        available = []
-        for spell in self.spells:
-            if spell.level <= spell_level:
-                available.append(spell)
-        return available
+        return [spell for spell in self.spells if spell.level <= spell_level]
