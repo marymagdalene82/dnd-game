@@ -1,8 +1,16 @@
+from dndgame.character import Character
+
+
 class Adventure:
     """Manage the player's adventure."""
 
-    def __init__(self) -> None:
-        """Initialize an adventure."""
+    def __init__(self, player: Character) -> None:
+        """Initialize an adventure.
+
+        Args:
+            player: The character controlled by the player.
+        """
+        self.player: Character = player
         self.current_scene: str = "start"
 
     def start(self) -> None:
