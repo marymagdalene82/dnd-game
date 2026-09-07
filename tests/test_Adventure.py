@@ -23,3 +23,12 @@ def test_adventure_start(capsys) -> None:
 
     assert "Your adventure begins!" in captured.out
     assert "dark forest" in captured.out
+
+def test_enter_forest() -> None:
+    """Test that entering the forest changes the current scene."""
+    player = Character("Hero", "Human", 10)
+    adventure = Adventure(player)
+
+    adventure.enter_forest()
+
+    assert adventure.current_scene == "forest"
