@@ -48,7 +48,7 @@ class Combat:
 
         if attack_roll >= defender.armor_class:
             damage = roll(weapon_max_damage, 1)
-            defender.hp -= damage
+            defender.hp = max(0, defender.hp - damage)
             return damage
 
         return 0

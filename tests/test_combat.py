@@ -95,3 +95,31 @@ def test_attack_misses() -> None:
 
     assert damage == 0
     assert enemy.hp == 5
+
+def test_attack_does_not_reduce_hp_below_zero() -> None:
+    """Test that an attack cannot reduce HP below zero."""
+    player = Character("Hero", "Human", 10)
+    enemy = Enemy("Goblin", 5, 10)
+
+    player.stats = {
+        "STR": 10,
+        "DEX": 10,
+        "CON": 10,
+    }
+
+    enemy.stats = {
+        "STR": 10,
+        "DEX": 10,
+        "CON": 10,
+    }
+
+    player.hp = player.max_hp = 10
+    enemy.hp = 1
+    enemy.max_hp = 5
+
+    combat = Combat(player, enemy)
+
+    with patch("dndgame.combat.roll", side_effect=[20, 6]):
+        combat.attack(player, enemy)
+
+    assert enemy.hp == 0
