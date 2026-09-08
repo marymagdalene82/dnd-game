@@ -2,6 +2,7 @@ from dndgame.character import Character
 from dndgame.combat import Combat
 from dndgame.enemy import Enemy
 
+
 class Adventure:
     """Manage the player's adventure."""
 
@@ -18,7 +19,6 @@ class Adventure:
         """Start the adventure."""
         print("Your adventure begins!")
         print("You find yourself standing at the entrance of a dark forest.")
-
 
     def enter_forest(self) -> None:
         """Let the player choose a path through the forest."""
@@ -60,6 +60,7 @@ class Adventure:
         print("You hear something moving in the bushes.")
         print("A goblin jumps out!")
         return self.encounter_goblin()
+
     def encounter_goblin(self) -> bool:
         """Start a combat encounter with a goblin.
 

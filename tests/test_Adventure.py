@@ -2,6 +2,7 @@ from dndgame.adventure import Adventure
 from dndgame.character import Character
 from unittest.mock import patch
 
+
 def test_adventure_creation() -> None:
     """Test that an adventure stores the player."""
     player = Character("Hero", "Human", 10)
@@ -24,6 +25,7 @@ def test_adventure_start(capsys) -> None:
     assert "Your adventure begins!" in captured.out
     assert "dark forest" in captured.out
 
+
 def test_enter_forest() -> None:
     """Test that entering the forest changes the current scene."""
     player = Character("Hero", "Human", 10)
@@ -33,6 +35,7 @@ def test_enter_forest() -> None:
         adventure.enter_forest()
 
     assert adventure.current_scene == "left_path"
+
 
 def test_enter_forest_left_path() -> None:
     """Test that choosing 1 enters the left path."""
@@ -55,6 +58,7 @@ def test_enter_forest_right_path() -> None:
 
     assert adventure.current_scene == "right_path"
 
+
 def test_enter_forest_rejects_invalid_choice() -> None:
     """Test that invalid choices are rejected."""
     player = Character("Hero", "Human", 10)
@@ -64,6 +68,7 @@ def test_enter_forest_rejects_invalid_choice() -> None:
         adventure.enter_forest()
 
     assert adventure.current_scene == "left_path"
+
 
 def test_explore_left_path() -> None:
     """Test that exploring the left path updates the scene."""
@@ -87,6 +92,7 @@ def test_explore_right_path() -> None:
     assert result is False
     assert adventure.current_scene == "right_path"
 
+
 def test_encounter_goblin_player_runs_away() -> None:
     """Test that the player can run away from a goblin."""
     player = Character("Hero", "Human", 10)
@@ -96,6 +102,7 @@ def test_encounter_goblin_player_runs_away() -> None:
         result = adventure.encounter_goblin()
 
     assert result is False
+
 
 def test_play_left_path() -> None:
     """Test that playing the adventure can follow the left path."""
@@ -118,6 +125,7 @@ def test_play_right_path_and_run_away() -> None:
 
     assert adventure.current_scene == "right_path"
 
+
 def test_encounter_goblin_rejects_invalid_choice() -> None:
     """Test that invalid combat choices are rejected."""
     player = Character("Hero", "Human", 10)
@@ -127,6 +135,7 @@ def test_encounter_goblin_rejects_invalid_choice() -> None:
         result = adventure.encounter_goblin()
 
     assert result is False
+
 
 def test_encounter_goblin_player_wins() -> None:
     """Test that the player can defeat the goblin."""
@@ -146,3 +155,71 @@ def test_encounter_goblin_player_wins() -> None:
             result = adventure.encounter_goblin()
 
     assert result is True
+
+
+def test_encounter_goblin_player_attacks_and_goblin_attacks() -> None:
+    """Test an attack exchange between the player and goblin."""
+    player = Character("Hero", "Human", 10)
+
+    player.stats = {
+        "STR": 10,
+        "DEX": 10,
+        "CON": 10,
+    }
+
+    player.hp = 10
+    player.max_hp = 10
+
+    adventure = Adventure(player)
+
+    with patch("builtins.input", side_effect=["1", "2"]):
+        with patch("dndgame.combat.roll", side_effect=[20, 1, 20, 1]):
+            result = adventure.encounter_goblin()
+
+    assert result is False
+
+
+def test_encounter_goblin_player_wins() -> None:
+    """Test that the player can defeat the goblin."""
+    player = Character("Hero", "Human", 10)
+
+    player.stats = {
+        "STR": 10,
+        "DEX": 10,
+        "CON": 10,
+    }
+
+    player.hp = 10
+    player.max_hp = 10
+
+    adventure = Adventure(player)
+
+    with patch("builtins.input", return_value="1"):
+        with patch("dndgame.combat.roll", side_effect=[20, 6]):
+            result = adventure.encounter_goblin()
+
+    assert result is True
+    assert player.is_alive()
+
+
+def test_play_right_path_and_defeat_goblin() -> None:
+    """Test that the adventure continues after defeating the goblin."""
+    player = Character("Hero", "Human", 10)
+
+    player.stats = {
+        "STR": 10,
+        "DEX": 10,
+        "CON": 10,
+    }
+
+    player.hp = 10
+    player.max_hp = 10
+
+    adventure = Adventure(player)
+
+    with patch("builtins.input", side_effect=["2", "1"]):
+        with patch("dndgame.combat.roll", side_effect=[20, 6]):
+            adventure.play()
+
+    assert adventure.current_scene == "right_path"
+    assert player.is_alive()

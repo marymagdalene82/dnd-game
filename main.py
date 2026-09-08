@@ -1,6 +1,7 @@
 from dndgame.character import Character
 from dndgame.adventure import Adventure
 
+
 def create_character():
     """Create a character from user input."""
     print("Welcome to D&D Adventure!")
@@ -44,6 +45,7 @@ def display_character(character):
         modifier = character.get_modifier(stat)
         print(f"{stat}: {value} ({'+' if modifier >= 0 else ''}{modifier})")
     print(f"\nHP: {character.hp}")
+
 
 def main() -> None:
     """Run the D&D game."""

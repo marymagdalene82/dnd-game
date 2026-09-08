@@ -96,6 +96,7 @@ def test_attack_misses() -> None:
     assert damage == 0
     assert enemy.hp == 5
 
+
 def test_attack_does_not_reduce_hp_below_zero() -> None:
     """Test that an attack cannot reduce HP below zero."""
     player = Character("Hero", "Human", 10)

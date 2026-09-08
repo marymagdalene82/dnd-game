@@ -8,6 +8,7 @@ class Spell:
         school: The school of magic the spell belongs to.
         spell_power: The amount of power associated with the spell.
     """
+
     def __init__(self, name: str, level: int, school: str, spell_power: int):
         """Initialize a spell.
 
@@ -32,6 +33,7 @@ class SpellBook:
     Attributes:
         spells: A list containing the spells in the spellbook.
     """
+
     def __init__(self) -> None:
         "Initialize a spellbook with an empty list of spells."
         self.spells: list[Spell] = []

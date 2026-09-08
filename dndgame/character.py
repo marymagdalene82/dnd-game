@@ -20,6 +20,8 @@ RACIAL_BONUSES: dict[str, dict[str, int]] = {
         "DEX": 2,
     },
 }
+
+
 class Character(Entity):
     """Represent a playable D&D character.
 
@@ -33,13 +35,14 @@ class Character(Entity):
         level: The character's current level.
         armor_class: The character's armor class.
     """
+
     def __init__(self, name: str, race: str, base_hp: int) -> None:
         """Initialize a character.
 
-            Args:
-                name: The character's name.
-                race: The character's race.
-                base_hp: The character's base hit points before modifiers.
+        Args:
+            name: The character's name.
+            race: The character's race.
+            base_hp: The character's base hit points before modifiers.
         """
         super().__init__(name, base_hp)
         self.race: str = race
